@@ -1,2 +1,54 @@
 # sandboxd
-Avoids running (slow) setup commands in your bashrc until you actually need them
+Speed up your bashrc: avoids running (slow) setup commands until you actually need them.
+
+# Why?
+Having installed `nvm`, `rvm`, `virtualenvwrapper` and other gubbins over time, my shell starts horrifically slowly. By running the install scripts on-demand, my time-to-first-prompt is nice and fast again.
+
+# How?
+sandboxd creates a placeholder shell function for each command you specify (e.g. `rvm`). When this command gets run for the first time, the following happens:
+- the setup you have associated with `cmd` gets run,
+- the `cmd` placeholder function (and all associated placeholders) gets removed
+- `cmd` gets run with the original arguments
+
+# Usage
+To 'sandbox' a setup, wrap it in a function named `sandbox_init_[name]`:
+
+```bash
+# in ~/.bashrc / zshrc
+source /path/to/sandboxd
+
+
+# in ~/.sandboxrc
+sandbox_init_nvm(){
+  source $(brew --prefix nvm)/nvm.sh #long running command
+}
+
+# create hooks for commands 'nvm', 'node' and 'nodemon'
+sandbox_hook nvm node
+sandbox_hook nvm nodemon
+# this one is created automatically based on the sandbox name
+# sandbox_hook nvm nvm
+```
+
+The sandbox setup gets run _once_, when either `nvm`, `nodemon` or `node` is used for the first time:
+
+```bash
+[20:45:44 ~] echo 'console.log("hi")' | node
+sandboxing nvm ...
+hi
+20:45:53 [~] echo 'console.log("hi")' | node
+hi
+```
+
+## Manually calling the sandbox command
+To manually run a specific sandbox setup, run `sandbox [name]`
+
+You might choose to do this to create "feature flags" in your bashrc:
+
+```bash
+#uncomment to enable features
+
+# sandbox virtualenv
+sandbox rvm
+sandbox nvm
+```
