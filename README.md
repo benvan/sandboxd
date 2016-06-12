@@ -1,20 +1,20 @@
 # sandboxd
-Speed up your bashrc: avoids running (slow) setup commands until you actually need them.
+Speed up your bashrc / zshrc: avoids running (slow) setup commands until you actually need them.
 
 # Why?
 Having installed `nvm`, `rvm`, `virtualenvwrapper` and other gubbins over time, my shell starts horrifically slowly. By running the install scripts on-demand, my time-to-first-prompt is nice and fast again.
 
 # How?
 sandboxd creates a placeholder shell function for each command you specify (e.g. `rvm`). When this command gets run for the first time, the following happens:
+- the `cmd` placeholder function (plus all associated placeholders) gets removed
 - the setup you have associated with `cmd` gets run,
-- the `cmd` placeholder function (and all associated placeholders) gets removed
 - `cmd` gets run with the original arguments
 
 # Usage
 To 'sandbox' a setup, wrap it in a function named `sandbox_init_[name]`:
 
 ```bash
-# in ~/.bashrc / zshrc
+# in ~/.bashrc / your shell rc file
 source /path/to/sandboxd
 
 
@@ -43,7 +43,7 @@ hi
 ## Manually calling the sandbox command
 To manually run a specific sandbox setup, run `sandbox [name]`
 
-You might choose to do this to create "feature flags" in your bashrc:
+You might choose to do this to create "feature flags" in your rc file:
 
 ```bash
 #uncomment to enable features
