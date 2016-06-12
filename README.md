@@ -26,7 +26,7 @@ sandbox_init_nvm(){
 # create hooks for commands 'nvm', 'node' and 'nodemon'
 sandbox_hook nvm node
 sandbox_hook nvm nodemon
-# this one is created automatically based on the sandbox name
+# this one not needed: it's created automatically based on the sandbox name
 # sandbox_hook nvm nvm
 ```
 
