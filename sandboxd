@@ -22,7 +22,7 @@ function sandbox_delete_hooks(){
 # prepares environment and removes hooks
 function sandbox(){
   local cmd=$1
-  echo sandboxing $cmd '...'
+  (>&2 echo "sandboxing $cmd ...")
   sandbox_delete_hooks $cmd 
   sandbox_init_$cmd # run user-defined sandbox 
 }
