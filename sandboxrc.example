@@ -1,0 +1,17 @@
+#!/bin/bash
+
+sandbox_cmd_nvm(){
+  source $(brew --prefix nvm)/nvm.sh
+}
+
+sandbox_cmd_rvm(){
+  if test -f ~/.rvm/scripts/rvm; then
+     [ "$(type rvm | grep -o function)" = "function" ] || source ~/.rvm/scripts/rvm
+  fi
+}
+
+sandbox_cmd_python(){
+  source /usr/local/bin/virtualenvwrapper.sh
+}
+
+sandbox_hook_cmd workon python 
