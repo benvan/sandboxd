@@ -36,7 +36,7 @@ The sandbox setup gets run _once_, when either `nvm`, `nodemon` or `node` is use
 [20:45:44 ~] echo 'console.log("hi")' | node
 sandboxing nvm ...
 hi
-20:45:53 [~] echo 'console.log("hi")' | node
+[20:45:53 ~] echo 'console.log("hi")' | node
 hi
 ```
 
