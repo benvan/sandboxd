@@ -2,7 +2,7 @@
 Speed up your bashrc / zshrc: avoids running (slow) setup commands until you actually need them.
 
 # Why?
-Having installed `nvm`, `rvm`, `virtualenvwrapper` and other similar gubbins over time, my shell starts horrifically slowly. By running these setup scripts on-demand, my time-to-first-prompt is nice and fast again. On top of this, I rarely need all of these tools enabled at the same time...
+Having installed `nvm`, `rvm`, `virtualenvwrapper` and other similar [gubbins](http://www.urbandictionary.com/define.php?term=gubbins) over time, my shell starts horrifically slowly. By running these setup scripts on-demand, my time-to-first-prompt is nice and fast again. On top of this, I rarely need all of these tools enabled at the same time...
 
 # How?
 sandboxd creates a placeholder shell function for each command you specify (e.g. `rvm`). When this command gets run for the first time, the following happens:
