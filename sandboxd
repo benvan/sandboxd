@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SANDBOXRC="$HOME/.sandboxrc"
+: ${SANDBOXRC:="$HOME/.sandboxrc"}
 
 # holds all hook descriptions in "cmd:hook" format
 sandbox_hooks=()
