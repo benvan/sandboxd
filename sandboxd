@@ -38,7 +38,7 @@ function sandbox_hook(){
   
   sandbox_hooks+=("${cmd}:${hook}")
 
-  eval "$hook(){ sandbox $cmd; $hook \$@ }"
+  eval "$hook(){ sandbox $cmd; $hook \$@ ; }"
 }
 
 
