@@ -47,8 +47,10 @@ function sandbox_hook(){
 source "$SANDBOXRC"
 
 # create hooks for the sandbox names themselves
-local funcs="$( cat $SANDBOXRC | sed 's/#.*$//g' | grep -o 'sandbox_init_[^(]\+' )"
+funcs="$( cat $SANDBOXRC | sed 's/#.*$//g' | grep -o 'sandbox_init_[^(]\+' )"
 echo "$funcs" | while read f; do
-  local cmd=$(echo $f | sed s/sandbox_init_//)
+  cmd=$(echo $f | sed s/sandbox_init_//)
    sandbox_hook $cmd $cmd;
 done
+unset cmd
+unset funcs
