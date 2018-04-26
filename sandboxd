@@ -22,10 +22,11 @@ function sandbox_delete_hooks(){
 # prepares environment and removes hooks
 function sandbox(){
   local cmd=$1
+
    if [[ "$(type $cmd | grep -o function)" = "function" ]]; then
     (>&2 echo "sandboxing $cmd ...")
-    sandbox_delete_hooks $cmd 
-    sandbox_init_$cmd # run user-defined sandbox 
+    sandbox_delete_hooks $cmd
+    sandbox_init_$cmd # run user-defined sandbox
   else
     (>&2 echo "sandbox '$cmd' not found.\nHave you defined sandbox_init_$cmd(){ ... } in your ~/.sandboxrc?")
     return 1
@@ -35,9 +36,8 @@ function sandbox(){
 function sandbox_hook(){
   local cmd=$1
   local hook=$2
-  
-  sandbox_hooks+=("${cmd}:${hook}")
 
+  sandbox_hooks+=( "${cmd}:${hook}" )
   eval "$hook(){ sandbox $cmd; $hook \$@ ; }"
 }
 
@@ -47,10 +47,12 @@ function sandbox_hook(){
 source "$SANDBOXRC"
 
 # create hooks for the sandbox names themselves
-funcs="$( cat $SANDBOXRC | sed 's/#.*$//g' | grep -o 'sandbox_init_[^(]\+' )"
-echo "$funcs" | while read f; do
-  cmd=$(echo $f | sed s/sandbox_init_//)
-   sandbox_hook $cmd $cmd;
-done
-unset cmd
-unset funcs
+function sandbox_initialise(){
+  local funcs="$( cat $SANDBOXRC | sed 's/#.*$//g' | grep -o 'sandbox_init_[^(]\+' )"
+  while read f; do
+    local cmd=$(echo $f | sed s/sandbox_init_//)
+    sandbox_hook $cmd $cmd;
+  done < <(echo "$funcs")
+}
+
+sandbox_initialise
