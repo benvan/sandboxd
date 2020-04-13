@@ -1,0 +1,18 @@
+sandbox_init_pyenv() {
+  export PYENV_ROOT="$HOME/.pyenv"
+  export PATH="$PYENV_ROOT/bin:$PATH"
+  export VIRTUAL_ENV_DISABLE_PROMPT=1
+  eval "$(pyenv init -)"
+  eval "$(pyenv virtualenv-init -)"
+}
+
+sandbox_init_ruby() {
+  export RBENV_ROOT="$HOME/.rbenv"
+  export PATH="$RBENV_ROOT/bin:$PATH"
+  export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
+  eval "$(rbenv init -)"
+}
+
+sandbox_hook_shims pyenv
+sandbox_hook_shims ruby "$HOME/.rbenv/shims"
+

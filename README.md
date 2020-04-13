@@ -52,3 +52,40 @@ This might be useful if you want to run a sandbox that doesn't have an associate
 sandbox rvm
 sandbox nvm
 ```
+
+# Shims
+Tools like [pyenv](https://github.com/pyenv/pyenv), [rbenv](https://github.com/rbenv/rbenv), [nodenv](https://github.com/nodenv/nodenv) etc use the concept of ['shims'](https://github.com/pyenv/pyenv#understanding-shims), which are helper scripts created when installed packages create command line utilities (e.g. installing the AWS CLI via Pip creates the `aws` command). To make it easy for sandboxd to lazy-load these environments when any of these 'shims' are called, use the function `sandbox_hook_shims {<name>} [<dir>]`. See [sandboxrc.example.pyenv](sandboxrc.example.pyenv) for more information.
+
+Example:
+Shims created under `~/.pyenv/shims/`
+```bash
+$ ls -l ~/.pyenv/shims
+ansible
+ansible-config
+aws
+flask
+[...]
+```
+
+To automatically add them all as a sandboxd `hook`, simply add the following to `.sandboxrc`:
+```bash
+# in ~/.sandboxrc
+
+sandbox_init_pyenv() {
+  export PYENV_ROOT="$HOME/.pyenv"
+  export PATH="$PYENV_ROOT/bin:$PATH"
+  export VIRTUAL_ENV_DISABLE_PROMPT=1
+  eval "$(pyenv init -)"
+  eval "$(pyenv virtualenv-init -)"
+}
+
+sandbox_hook_shims pyenv
+```
+
+Here, the `pyenv` argument of `sandbox_hook_shims` matches the function name defined above (`sandbox_init_pyenv`).
+`sandbox_hook_shims` assumes the shim directory to be `~/.<name>/shims` where `<name>` is the first argument. If the diretory is different, pass it as an argument:
+
+```bash
+sandbox_hook_shims pyenv /path/to/shim/directory
+```
+
