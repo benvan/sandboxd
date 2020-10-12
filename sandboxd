@@ -33,6 +33,7 @@ function sandbox(){
   fi
 }
 
+# adds hooks to sandboxes
 function sandbox_hook(){
   local cmd=$1
   local hook=$2
@@ -41,8 +42,17 @@ function sandbox_hook(){
   eval "$hook(){ sandbox $cmd; $hook \$@ ; }"
 }
 
-
-
+# automatically add hooks for shims of virtualenvs, e.g. pyenv, rbenv, etc
+# optionally pass the shim directory, assumed to be $HOME/.<command>/shims
+function sandbox_hook_shims(){
+  local cmd=$1
+  local dir="${2:-$HOME/.$1/shims}"
+  if test -d $dir; then
+    for shim in $(ls $dir); do
+      sandbox_hook $1 $shim
+    done
+  fi
+}
 
 source "$SANDBOXRC"
 
