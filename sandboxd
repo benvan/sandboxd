@@ -12,10 +12,10 @@ function sandbox_delete_hooks(){
   do
     if [[ $i == "${cmd}:"* ]]; then
      local hook=$(echo $i | sed "s/.*://")
-     unset -f "$hook"
+     # Check if this is still a function, as it could have been unset alrady in case of duplicates.
+     typeset -f "$hook" >/dev/null && unset -f "$hook"
     fi
   done
-
 }
 
 
