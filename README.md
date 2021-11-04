@@ -89,3 +89,9 @@ Here, the `pyenv` argument of `sandbox_hook_shims` matches the function name def
 sandbox_hook_shims pyenv /path/to/shim/directory
 ```
 
+## sandboxrc configuration file
+The location of the configuration file depends on the environment's configuration. The file is searched in the following order:
+
+1. `$SANDBOXRC` -  if it is set. This has highest precedence. Thus you can set this to override to custom location.
+1. `$XDG_CONFIG_HOME/sandboxd/sandboxrc` - if the directory `sandboxd/` exist. Note that `$XDG_CONFIG_HOME` defaults to `$HOME/.config`
+1. `$HOME/.sandboxrc` - fall back to old default location.
