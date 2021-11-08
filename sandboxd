@@ -38,7 +38,7 @@ function sandbox(){
     sandbox_delete_hooks $cmd
     sandbox_init_$cmd # run user-defined sandbox
   else
-    (>&2 echo "sandbox '$cmd' not found.\nHave you defined sandbox_init_$cmd(){ ... } in your sandboxrc?")
+    (>&2 echo "sandbox '$cmd' not found.\nHave you defined sandbox_init_$cmd(){ ... } in your sandboxrc (${RC_FILE})?")
     return 1
   fi
 }
